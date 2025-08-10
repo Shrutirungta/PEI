@@ -1,0 +1,65 @@
+1) Dataset Classification:(Start Schema design)
+Dim_Customer → Customer table
+Dim_Shipping → Shipping table
+Fact_Order → Order table
+=========================================================================
+2)Anticipated Dataset needs:
+Dim_Customer (Customer Table):
+------------
+Purpose: Master record of customer information for reporting and analysis.
+Proposed Fields & Rules:
+
+Field	                Type	Rules
+-------------------------------------
+Customer_ID (PK)	    INT	    Unique, not null,numeric
+First	                VARCHAR	Only alphabetic chars,spaces,- or dots 
+Last	                VARCHAR	Only alphabetic chars,spaces,- or dots 
+Age	                    INT  	Between be a range(0-120)
+Country	                VARCHAR	Must have a standardized list of countries
+
+Quality Enhancements Needed:
+---------------------------
+Must have unique Customer_ID,so remove duplicates.
+Standardize name case(e.g., "jonny" → "Jonny").
+Replace/fix or remove invalid characters in names (S@sda, A^^jay).
+Fixed country names (no variations like "US", "USA", "United States").
+
+Fact_Order (Order Table):
+----------
+Purpose: Stores transactional sales events.
+Proposed Fields & Rules:
+
+Field	               Type	     Rules
+Order_ID (PK)	       INT	     Unique, not null,numeric
+Item	               VARCHAR	 Descriptive text for the product/service
+Amount	               DECIMAL	 Must be non negative
+Customer_ID (FK)	   INT	     Must exist in Dim_Customer
+
+Quality Enhancements Needed:
+---------------------------
+Must have unique Order_ID,so remove duplicates.
+Ensure all Customer_ID values exist in Customer table.
+Check if  Amount is positive.
+
+Dim_Shipping (Shipping Table):
+------------
+Purpose: Tracks order delivery statuses.
+Proposed Fields & Rules:
+
+Field	               Type	     Rules
+Shipping_ID (PK)	   INT	     Unique, not null
+Status	               VARCHAR	 Must be one of: Pending, Delivered
+Customer_ID (FK)	   INT	     Must be in Dim_Customer
+
+Quality Enhancements Needed:
+---------------------------
+Remove duplicate Shipping_ID.
+Validate that Status present.
+Ensure all Customer_ID values exist in Dim_Customer table.
+===============================================================================
+3)Benefits of the Proposed Model:
+------------------------------
+Cleans, standardizes dataset that's ready for reporting
+Removes orphaned and duplicate records
+Creates well-maintained business rules
+Scalable design for future data sources
